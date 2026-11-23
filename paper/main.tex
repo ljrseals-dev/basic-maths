@@ -67,6 +67,99 @@ The companion repository contains deterministic example data and scripts that re
 A complete evaluation should separate software correctness, structural query utility, and perceptual performance. Software tests should cover parallel edges, invalid endpoints, empty graphs, zero weights, non-finite weights, cycles, edge-distinct path enumeration, and normalization invariance. Structural evaluation should compare task completion and error rates against a baseline graph viewer. A perceptual study should preregister hypotheses, participant criteria, stimuli, training, task measures, and analysis. The present mapping is a proposal; no listener study or mission-hardware experiment is reported here.
 \section{Limitations and Scope}
 ETG does not establish priority or authorship as a matter of law or scholarly policy. It records typed assertions whose evidential status must be assessed independently. Edge weights are not inherently probabilities, truth values, or measures of intellectual influence. The five-type vocabulary is not exhaustive. The spectral mapping compresses graph information and is not invertible. No claim is made that the mapping is perceptually optimal, robust under noise, suitable for telemetry, or useful for propulsion control.
+
+\section{Forensic Evidence and Provenance Extension}
+\subsection{Evidence assertions are not evidence truth}
+Forensic use requires a strict separation between an underlying item, a recorded observation, an analyst's inference, and an assertion entered into the graph. Let $\mathcal{I}$ denote evidence items, $\mathcal{O}$ observations, $\mathcal{A}$ analytical assertions, and $\mathcal{S}$ source records. An evidence record is represented as
+\[
+r=(i,o,a,s,t_c,t_r,h,\pi),
+\]
+where $i\in\mathcal{I}$ is the item identifier, $o\in\mathcal{O}$ is an observation, $a\in\mathcal{A}$ is an assertion, $s\in\mathcal{S}$ identifies the source or custodian, $t_c$ is collection time, $t_r$ is record time, $h$ is a cryptographic digest of the acquired digital representation where applicable, and $\pi$ is the acquisition and handling history. The tuple is a data model, not a guarantee that the values are correct. A digest can support byte-level integrity checking against a known reference digest; it does not prove authorship, acquisition circumstances, completeness, or truth.
+The graph should distinguish at least the following epistemic states:
+\[
+Q=\{\textsf{observed},\textsf{inferred},\textsf{disputed},
+\textsf{unverified},\textsf{withdrawn}\}.
+\]
+These are workflow classifications, not calibrated probabilities. In particular, $\textsf{observed}$ means that an observation has been recorded under a stated procedure; it does not imply that the interpretation of that observation is correct. An inference should link to the observations and assumptions from which it was derived.
+\subsection{Chain-of-custody event model}
+Let a custody sequence for item $i$ be $C_i=(c_0,\ldots,c_n)$, with each event
+\[
+c_j=(i,a_j,b_j,t_j,\ell_j,h_j),
+\]
+where $a_j$ and $b_j$ identify releasing and receiving custodians, $t_j$ is the event time, $\ell_j$ is a location or controlled storage reference, and $h_j$ is the digest recorded for the item or transfer package. A structurally continuous handoff requires
+\[
+b_j=a_{j+1}\quad\text{and}\quad t_j\leq t_{j+1}
+\]
+for every adjacent pair. If digests are required to remain constant for an unchanged item, then $h_j=h_{j+1}$ is an additional check; transformations, conversions, extraction, or packaging must instead create a new derivative-item record linked to its parent and record the transformation procedure. Missing events, identity mismatches, or unexplained digest changes are audit exceptions, not automatically proof of tampering.
+\subsection{Temporal relations and precedence}
+A precedence edge should not be interpreted as a bare timestamp comparison. Let each event have an uncertainty interval $I(x)=[t_x^-,t_x^+]$. A strict temporal ordering is supported by the recorded intervals only when
+\[
+t_x^+ < t_y^-.
+\]
+If intervals overlap, the available temporal information does not establish strict order. A precedence assertion may additionally require documentary evidence, authenticated timestamps, or an explicit domain rule. ETG therefore records the basis and method for each precedence edge rather than deriving priority solely from graph topology.
+\subsection{Evidence weight versus evidential strength}
+The original edge weight $\lambda(e)$ is a non-negative application score. It must not be relabeled as probability, confidence, likelihood, or evidential strength without a separately justified statistical model. If a forensic application later introduces a likelihood ratio, it must define the competing propositions and relevant population assumptions. For hypotheses $H_1,H_2$ and evidence $E$, the likelihood ratio is
+\[
+LR(E)=\frac{P(E\mid H_1)}{P(E\mid H_2)},
+\]
+when both conditional probabilities are meaningful and estimable. The LR is not the posterior odds and is not the probability that a person or proposition is guilty or true. ETG's structural edge weight is kept separate from this quantity.
+\subsection{Integrity and reproducibility record}
+Each analysis run should publish a manifest
+\[
+M=(v_G,v_S,v_A,\theta,\eta,\mathcal{R}),
+\]
+where $v_G$ is the graph schema version, $v_S$ the source-data version, $v_A$ the analysis-software version, $\theta$ the algorithm parameters, $\eta$ the environment description, and $\mathcal{R}$ the set of input and output digests. A reproducible run is one for which an independent analyst can reconstruct the inputs, parameters, software version, and deterministic outputs within declared numerical tolerances. A reproducible computation is not equivalent to a validated forensic method; validation additionally requires fitness-for-purpose studies, known limitations, error-rate characterization where applicable, and competent review.
+\section{Mathematical Invariants and Audit Conditions}
+\subsection{Graph well-formedness}
+For a graph $\mathcal{G}=(V,E,s,t,\tau,\lambda,\rho)$, endpoint validity requires
+\[
+\forall e\in E:\quad s(e)\in V\land t(e)\in V.
+\]
+Edge identity is independent of its endpoints and type. For distinct $e_1,e_2$, it is permissible that $s(e_1)=s(e_2)$ and $t(e_1)=t(e_2)$, while $e_1\neq e_2$. This preserves parallel assertions, including different sources or evidential bases for apparently identical relations. An implementation that uses only $(s(e),t(e),\tau(e))$ as a unique key may still collapse two same-type assertions; a stable edge identifier is therefore required.
+\subsection{Acyclicity of strict precedence}
+If and only if the application defines precedence as a strict, transitive temporal or documentary ordering, its induced subgraph should be acyclic. Let $E_p=\{e\in E:\tau(e)=\textsf{precedence}\}$. The condition is
+\[
+\neg\exists v\in V,\ k\geq1,\ P:
+P\text{ is a directed cycle from }v\text{ to }v
+\text{ using only }E_p.
+\]
+A detected cycle is an inconsistency requiring review. It should not be silently repaired by deleting edges or changing timestamps. Cycles in influence, citation, or modulation relations may be meaningful and must not be prohibited by a global DAG constraint.
+\subsection{Weight constraints and missingness}
+The base model requires $\lambda:E\to\mathbb{R}_{\geq0}$. Missing or unknown values should not be encoded as zero, because zero may be a meaningful score. Use an optional value $\lambda:E\to\operatorname{Option}(\mathbb{R}_{\geq0})$ or a separate missingness state. Non-finite values are rejected at ingestion. If weights are normalized, the normalization policy and reference population are recorded in the run manifest.
+\subsection{Monotonicity and boundedness of the mapping}
+For $\sigma(x)=x/(1+x)$ and $x\geq0$,
+\[
+0\leq\sigma(x)<1,\qquad
+\sigma'(x)=\frac{1}{(1+x)^2}>0.
+\]
+Thus each channel is strictly increasing in its own non-negative feature when its normalization constant is positive. For $L_{\max},W_{\max}>0$, the map obeys
+\[
+250\leq F_1<850,\quad 600\leq F_2<2400,\quad
+2400\leq F_3<3200.
+\]
+These are algebraic bounds only. They do not establish perceptual separability, robustness, or forensic discriminability.
+\subsection{Sensitivity to normalization}
+For $F(x;A,B)=A+B\sigma(x/c)$, with $c>0$,
+\[
+\frac{\partial F}{\partial x}
+=\frac{B}{c(1+x/c)^2}.
+\]
+Sensitivity decreases as $x$ grows. Consequently, differences among large path weights are compressed. If $c$ is computed from the maximum weight in the current graph, adding an unrelated edge can change the output for an unchanged path. A fixed calibration constant avoids that particular dependency but may be poorly scaled for a new domain. Both policies must be declared and tested.
+\section{Lean 4 Formalization and Proof Obligations}
+A machine-checked development should separate definitions, invariants, and domain assumptions. The companion file \texttt{formalization/ETG.lean} defines vertex kinds, transfer types, epistemic statuses, source references, edge instances, graph well-formedness, edge-realized walks, non-negative path weights, and rational spectral mapping bounds. Its theorems establish structural and algebraic properties under explicit hypotheses. The Lean development does not certify evidence authenticity or the truth of a recorded claim.
+The intended formalization is organized into layers:
+\begin{enumerate}
+\item \textbf{Core graph layer:} finite vertex and edge collections; stable identifiers; source and target functions; type and weight functions.
+\item \textbf{Well-formedness layer:} endpoint membership, identifier uniqueness, valid weights, and preservation of parallel edge instances.
+\item \textbf{Path layer:} edge-realized walks, simple paths, cycles, path length, aggregate weights, and type diversity.
+\item \textbf{Evidence layer:} source references, acquisition events, epistemic status, temporal intervals, and custody continuity predicates.
+\item \textbf{Spectral layer:} non-negative feature assumptions, positive normalization constants, monotonicity, and channel bounds.
+\item \textbf{Audit layer:} precedence-subgraph acyclicity, deterministic serialization, and explicit exception reporting.
+\end{enumerate}
+A theorem in Lean proves a proposition from its formal assumptions. It does not prove that the assumptions accurately describe a physical exhibit, a source document, a custodian, or an actual investigative process. This boundary is essential in forensic contexts.
+\section{Professional Forensic Use: Validation Requirements}
+ETG should be treated as a provenance and analytical-record structure, not as a stand-alone forensic identification method. A deployment must define the target examination, relevant population, measurement process, known sources of error, decision thresholds, uncertainty reporting, and independent review process. Validation should be specific to the intended use; a method demonstrated on synthetic graph fixtures cannot be represented as validated on casework.
+Minimum validation work includes: (a) schema and parser conformance tests; (b) independent reconstruction of custody sequences; (c) mutation tests for altered identifiers, timestamps, digests, and edge types; (d) inter-analyst agreement studies for manual classifications; (e) robustness testing under missing and conflicting records; (f) documented false-positive and false-negative behavior for any automated decision rule; and (g) audit of versioning, access control, and retention. No conclusion about guilt, identity, authorship, cause, or intent should be generated solely from a graph score or spectral output.
 \section{Conclusion}
 ETG provides a typed directed multigraph vocabulary for selected heterogeneous transfer relations and an explicitly limited path-to-frequency mapping. Its contribution is the proposed combination and operational specification, not a claim to replace established provenance standards or to demonstrate validated auditory communication. The next steps are implementation verification, interoperability work, and controlled empirical evaluation.
 \printbibliography
