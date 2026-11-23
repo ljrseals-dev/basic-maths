@@ -1,71 +1,72 @@
-\\documentclass[11pt]{article}
-\\usepackage[margin=1in]{geometry}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{microtype}
-\\usepackage{amsmath,amssymb,mathtools}
-\\usepackage{booktabs}
-\\usepackage{graphicx}
-\\usepackage{float}
-\\usepackage{hyperref}
-\\usepackage[round,authoryear]{natbib}
-\\usepackage{caption}
-\\title{The Epistolary Transfer Graph (ETG): A Typed Directed Multigraph for Heterogeneous Provenance, Attribution, and Exploratory Graph Sonification}
-\\author{Lewis James Seals Jr.\\\\Independent Researcher\\\\Lewis Seals Publishing L3C\\\\\\texttt{ljrseals@gmail.com}}
-\\date{Version 0.3.0 --- 23 November 2026}
-\\begin{document}
-\\maketitle
-\\begin{abstract}
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[round,authoryear]{natbib}
+\usepackage{caption}
+\title{The Epistolary Transfer Graph (ETG): A Typed Directed Multigraph for Heterogeneous Provenance, Attribution, and Exploratory Graph Sonification}
+\author{Lewis James Seals Jr.\\Independent Researcher\\Lewis Seals Publishing L3C\\\texttt{ljrseals@gmail.com}}
+\date{Version 0.3.0 --- 23 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
 This paper specifies the Epistolary Transfer Graph (ETG), a typed, weighted, directed multigraph for representing heterogeneous relational assertions among objects such as documents, claims, motifs, and data packets. Five transfer classes are distinguished: precedence, influence, embedding, citation, and modulation. Unlike a simple directed graph, the model preserves distinct edge instances between the same ordered pair of vertices. A partial mapping from selected edge-realized paths to bounded frequency-parameter triples is defined as an exploratory sonification interface. The mapping is deterministic under stated normalization and path-selection rules, but it is many-to-one and is not claimed to preserve graph structure or to have validated perceptual utility. The paper positions ETG in relation to provenance standards and sonification research, provides a reproducible computational design, and specifies tests and evaluation procedures required before claims of practical effectiveness can be made.
-\\end{abstract}
-\\noindent\\textbf{Keywords:} typed directed multigraph; provenance; attribution; graph traversal; sonification; auditory display; spectral mapping.
-\\section{Introduction}
+\end{abstract}
+\noindent\textbf{Keywords:} typed directed multigraph; provenance; attribution; graph traversal; sonification; auditory display; spectral mapping.
+\section{Introduction}
 Relational records often combine assertions that differ in meaning while sharing a common graph-shaped representation. A document may precede another document, influence a later claim, cite a source, embed a mathematical construction, or modulate a musical motif. Treating all such relations as undifferentiated links obscures their semantics. Provenance research addresses the origins and production histories of information objects; the W3C PROV family provides a standardized vocabulary for describing entities, activities, and agents and their relations (World Wide Web Consortium [W3C], 2013a, 2013b). ETG is proposed as a compact typed-multigraph representation for a selected set of cross-domain transfer assertions, not as a replacement for PROV.
 A second motivation is exploratory auditory access to graph structure. Sonification research studies systematic transformations from data relations to sound, but mapping design and evaluation remain central methodological issues (Dubus & Bresin, 2013). Recent work has emphasized common terminology and coordinated visual-auditory analysis (Enge et al., 2023, 2024). ETG therefore treats sound generation as a downstream, optional mapping rather than as an intrinsic property of the graph.
-\\section{Related Work and Positioning}
-\\subsection{Provenance models}
+\section{Related Work and Positioning}
+\subsection{Provenance models}
 The PROV model organizes provenance around entities, activities, and agents, with relations that describe derivation, attribution, association, and influence. PROV-O expresses these concepts as an ontology for interoperable provenance descriptions (W3C, 2013a, 2013b). ETG differs in purpose and scope: its five transfer labels are a domain-oriented edge vocabulary for heterogeneous graph exploration. A production implementation should define explicit crosswalks to PROV terms rather than imply semantic equivalence.
-\\subsection{Sonification}
+\subsection{Sonification}
 Sonification is not merely the attachment of arbitrary sounds to values. Mapping choices determine which data features are represented and what tasks listeners may perform. A systematic review of physical-quantity sonification found that evaluation of mapping strategies was comparatively uncommon, motivating explicit validation rather than intuitive claims of effectiveness (Dubus & Bresin, 2013). Work integrating visualization and sonification likewise argues for coordinated design and evaluation across perceptual channels (Enge et al., 2024).
-\\section{Formal Model}
+\section{Formal Model}
 Let an ETG be
-\\[
-\\mathcal{G}=(V,E,s,t,\\tau,\\lambda,\\rho),
-\\]
-where $V$ is a finite vertex set, $E$ is a finite set of edge instances, $s,t:E\\to V$ assign source and target vertices, $\\tau:E\\to T$ assigns edge types, $\\lambda:E\\to\\mathbb{R}_{\\geq 0}$ assigns non-negative weights, and $\\rho$ is a partial mapping defined on selected edge-realized paths. The transfer vocabulary is
-\\[
-T=\\{\\textsf{precedence},\\textsf{influence},\\textsf{embedding},
-\\textsf{citation},\\textsf{modulation}\\}.
-\\]
-Distinct edge instances may share the same source and target: for $u,v\\in V$, the fiber $E_{uv}=\\{e\\in E:s(e)=u\\land t(e)=v\\}$ may contain more than one element. This edge-instance formulation is essential: a path is not determined solely by its vertex sequence when parallel edges exist.
+\[
+\mathcal{G}=(V,E,s,t,\tau,\lambda,\rho),
+\]
+where $V$ is a finite vertex set, $E$ is a finite set of edge instances, $s,t:E\to V$ assign source and target vertices, $\tau:E\to T$ assigns edge types, $\lambda:E\to\mathbb{R}_{\geq 0}$ assigns non-negative weights, and $\rho$ is a partial mapping defined on selected edge-realized paths. The transfer vocabulary is
+\[
+T=\{\textsf{precedence},\textsf{influence},\textsf{embedding},
+\textsf{citation},\textsf{modulation}\}.
+\]
+Distinct edge instances may share the same source and target: for $u,v\in V$, the fiber $E_{uv}=\{e\in E:s(e)=u\land t(e)=v\}$ may contain more than one element. This edge-instance formulation is essential: a path is not determined solely by its vertex sequence when parallel edges exist.
 Each vertex and edge may carry metadata, but metadata fields do not alter the core tuple unless their semantics are formally specified. In particular, evidence, confidence, provenance of the assertion, temporal validity, and author identity should be represented explicitly in an implementation profile.
-\\section{Path Semantics}
-An edge-realized path of length $k\\geq1$ is an alternating sequence
-\\[
-P=(v_0,e_1,v_1,\\ldots,e_k,v_k)
-\\]
+\section{Path Semantics}
+An edge-realized path of length $k\geq1$ is an alternating sequence
+\[
+P=(v_0,e_1,v_1,\ldots,e_k,v_k)
+\]
 such that $s(e_i)=v_{i-1}$ and $t(e_i)=v_i$ for every $i$. A vertex walk alone is insufficient to determine a path in a multigraph. A simple path has no repeated vertices; a cycle is a closed walk with a specified edge sequence. Algorithms must state whether they enumerate edge-distinct paths, vertex-simple paths, bounded-length walks, or selected paths. This distinction affects both reproducibility and the spectral features below.
-\\section{Exploratory Spectral Mapping}
-For a selected path $P$, define length $f_L(P)=k$, aggregate weight $f_W(P)=\\sum_{i=1}^k\\lambda(e_i)$, and transfer-type diversity $f_T(P)=|\\{\\tau(e_i):1\\leq i\\leq k\\}|$. Let $\\sigma(x)=x/(1+x)$ for $x\\geq0$. For positive normalization constants $L_{\\max}$ and $W_{\\max}$, define
-\\[
-\\rho(P)=(F_1,F_2,F_3),
-\\]
+\section{Exploratory Spectral Mapping}
+For a selected path $P$, define length $f_L(P)=k$, aggregate weight $f_W(P)=\sum_{i=1}^k\lambda(e_i)$, and transfer-type diversity $f_T(P)=|\{\tau(e_i):1\leq i\leq k\}|$. Let $\sigma(x)=x/(1+x)$ for $x\geq0$. For positive normalization constants $L_{\max}$ and $W_{\max}$, define
+\[
+\rho(P)=(F_1,F_2,F_3),
+\]
 with
-\\begin{align*}
-F_1&=250+600\\,\\sigma(f_L(P)/L_{\\max}),\\\\
-F_2&=600+1800\\,\\sigma(f_W(P)/W_{\\max}),\\\\
-F_3&=2400+800\\,\\sigma(f_T(P)/5).
-\\end{align*}
-The output ranges are bounded by construction: $250\\leq F_1<850$, $600\\leq F_2<2400$, and $2400\\leq F_3<3200$ Hz. This is a parameter mapping, not a validated model of vowel perception, nasal resonance, spacecraft communication, or propulsion. The mapping is many-to-one: different paths can share the same three features and therefore the same output. It should be described as formant-parameterized only if the renderer implements an appropriate resonant-filter model; three sine oscillators alone do not constitute a formant-filter synthesizer.
-Normalization is part of the method, not an implementation detail. $L_{\\max}$ and $W_{\\max}$ must be positive and published with each run. If graph-relative maximum edge weight is used, the same graph can yield different outputs after adding an unrelated high-weight edge. A fixed, externally specified scale improves cross-graph comparability but requires a justified domain range. Both policies should be evaluated.
-\\section{Reproducible Graph and Chart Assets}
+\begin{align*}
+F_1&=250+600\,\sigma(f_L(P)/L_{\max}),\\
+F_2&=600+1800\,\sigma(f_W(P)/W_{\max}),\\
+F_3&=2400+800\,\sigma(f_T(P)/5).
+\end{align*}
+The output ranges are bounded by construction: $250\leq F_1<850$, $600\leq F_2<2400$, and $2400\leq F_3<3200$ Hz. This is a parameter mapping, not a validated model of vowel perception, nasal resonance, spacecraft communication, or propulsion. The mapping is many-to-one: different paths can share the same three features and therefore the same output. It should be described as formant-parameterized only if the renderer implements an appropriate resonant-filter model; three sine oscillators alone do not constitute a formant-filter synthesizer.
+Normalization is part of the method, not an implementation detail. $L_{\max}$ and $W_{\max}$ must be positive and published with each run. If graph-relative maximum edge weight is used, the same graph can yield different outputs after adding an unrelated high-weight edge. A fixed, externally specified scale improves cross-graph comparability but requires a justified domain range. Both policies should be evaluated.
+\section{Reproducible Graph and Chart Assets}
 The companion repository contains deterministic example data and scripts that render (a) a typed multigraph schematic and (b) the three mapping channels over selected example paths. These examples are didactic fixtures, not empirical observations. Each figure caption identifies the data file, script, and parameters used. Reproduction instructions are maintained in the repository README.
-\\section{Evaluation Protocol}
+\section{Evaluation Protocol}
 A complete evaluation should separate software correctness, structural query utility, and perceptual performance. Software tests should cover parallel edges, invalid endpoints, empty graphs, zero weights, non-finite weights, cycles, edge-distinct path enumeration, and normalization invariance. Structural evaluation should compare task completion and error rates against a baseline graph viewer. A perceptual study should preregister hypotheses, participant criteria, stimuli, training, task measures, and analysis. The present mapping is a proposal; no listener study or mission-hardware experiment is reported here.
-\\section{Limitations and Scope}
+\section{Limitations and Scope}
 ETG does not establish priority or authorship as a matter of law or scholarly policy. It records typed assertions whose evidential status must be assessed independently. Edge weights are not inherently probabilities, truth values, or measures of intellectual influence. The five-type vocabulary is not exhaustive. The spectral mapping compresses graph information and is not invertible. No claim is made that the mapping is perceptually optimal, robust under noise, suitable for telemetry, or useful for propulsion control.
-\\section{Conclusion}
+\section{Conclusion}
 ETG provides a typed directed multigraph vocabulary for selected heterogeneous transfer relations and an explicitly limited path-to-frequency mapping. Its contribution is the proposed combination and operational specification, not a claim to replace established provenance standards or to demonstrate validated auditory communication. The next steps are implementation verification, interoperability work, and controlled empirical evaluation.
-\\bibliographystyle{apalike}
-\\bibliography{references}
-\\end{document}
+\bibliographystyle{apalike}
+\bibliography{references}
+\end{document}
