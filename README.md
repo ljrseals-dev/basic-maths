@@ -1,68 +1,80 @@
 # Epistolary Transfer Graph (ETG)
 
-**A novel directed multigraph for modeling formal letter precedence, mathematical transfer, and harmonic encoding in spacecraft telemetry and nasal-aeronautic (phonetic-harmonic) propulsion systems.**
+**A typed directed multigraph proposal for representing heterogeneous relational assertions, provenance, and exploratory graph-derived auditory parameters.**
 
-Invented 22 November 2026.  
-Public domain dedication of the core concept; implementation under MIT.
+Author: Lewis James Seals Jr.  
+Independent Researcher · Lewis Seals Publishing L3C  
+Initial concept date: 22 November 2026
 
-## Why this is newsworthy
+## Scope and evidence status
 
-Until now, formal notices of scientific or mathematical precedence (letters asserting priority of discovery) and the transfer of ideas between researchers have lived in legal or academic text.  
-Simultaneously, autonomous deep-space probes require robust, low-bandwidth methods to encode state, attribution, and control signals into their own propulsion and communication waveforms.
+ETG is a proposed data model. It represents typed directed relationships among documents, claims, motifs, data packets, agents, and activities. The current transfer vocabulary includes precedence, influence, embedding, citation, and modulation.
 
-The **Epistolary Transfer Graph** is the first formal object that:
+The companion spectral mapping is exploratory. It maps selected edge-realized paths to bounded frequency-parameter triples. It is not demonstrated to be a validated perceptual encoding, lossless graph representation, forensic identification method, spacecraft telemetry protocol, or propulsion-control method. No hardware-in-the-loop, mission, or controlled listener-study results are claimed.
 
-1. Treats a formal letter (or claim set) as a first-class vertex.
-2. Models *transfer* (precedence, influence, algebraic embedding, citation, or harmonic modulation) as typed directed edges.
-3. Adds a **nasal resonance layer** — a novel spectral mapping from graph cycles and paths onto phonetic-harmonic spectra suitable for both human-audible music and spacecraft reaction-control or continuous-wave propulsion signalling.
-4. Provides a clean mathematical interface that can be formalised in Lean or used as an MCP resource for AI agents negotiating attribution in real time.
+ETG records assertions and their provenance. A recorded edge does not, by itself, establish that the asserted relationship is true, that a source is authentic, or that authorship or legal priority has been established.
 
-Potential applications that make it newsworthy:
-- AI systems that must transmit discovery-attribution claims as part of interstellar telemetry.
-- Generative music systems that compose “precedence scores” whose structure is isomorphic to a formal legal/mathematical letter.
-- Hybrid nasal-aeronautic controllers that use graph-derived formants for soft propulsion or attitude signalling (the “nasal” component refers to the use of nasalised formant spectra as a robust, low-SNR encoding channel).
+## Core mathematical model
 
-## Core definition
-
-An **Epistolary Transfer Graph** is a 5-tuple
+An ETG is represented as
 
 \[
-G = (V, E, \tau, \lambda, \rho)
+\mathcal G=(V,E,s,t,\tau,\lambda,\rho),
 \]
 
-where
+where:
 
-- \(V\) is a finite set of **vertices** (each vertex represents a formal letter, a mathematical claim, a musical motif, or a spacecraft state packet).
-- \(E \subseteq V \times V \times T\) is a set of **typed directed edges** (multiple edges of different types between the same pair are allowed).
-- \(T\) is a finite set of **transfer types** (e.g. `precedence`, `influence`, `algebraic_embedding`, `harmonic_modulation`, `citation`).
-- \(\tau: E \to T\) is the type map.
-- \(\lambda: E \to \mathbb{R}_{\ge 0}\) is a non-negative strength or musical-interval weight.
-- \(\rho: \mathcal{C}(G) \to \mathcal{S}\) is the **nasal resonance function** that maps cycles (or distinguished paths) of \(G\) into a spectral/formant space \(\mathcal{S}\) suitable for both audio synthesis and continuous-wave telemetry.
+- \(V\) is a finite set of vertices;
+- \(E\) is a finite set of edge instances;
+- \(s,t:E\to V\) give source and target vertices;
+- \(\tau:E\to T\) assigns a transfer type;
+- \(\lambda:E\to\mathbb R_{\geq0}\) assigns a non-negative application score;
+- \(\rho\) is a partial mapping from selected edge-realized paths to spectral parameter triples.
 
-The nasal resonance layer is the genuinely novel component: it supplies a canonical, deterministic map from the combinatorial structure of precedence/transfer relations into a phonetic-harmonic signature that can be radiated by a spacecraft or performed as music.
+The edge-instance representation permits parallel edges, including multiple assertions between the same ordered pair of vertices. A stable edge identifier is required so that distinct assertions are not collapsed.
 
-## Quick start
+## Repository structure
+
+- `src/etg.py` — original Python reference implementation (under review; not yet asserted to satisfy the extended forensic specification).
+- `paper/main.tex` — LaTeX manuscript with APA-style author–date citations.
+- `paper/references.bib` — BibLaTeX reference database.
+- `figures/data/example_graph.csv` — synthetic illustrative edge list.
+- `figures/generate_figures.py` — reproducible figure generation.
+- `formalization/ETG.lean` — foundational Lean 4 definitions and theorems.
+- `formalization/README.md` — Lean setup and proof-scope notes.
+- `.github/workflows/build-paper.yml` — manuscript PDF build.
+- `.github/workflows/lean.yml` — Lean project build workflow.
+
+## Reproduce figures
 
 ```bash
-python -m pip install networkx numpy
-python examples/basic_etg.py
+python -m pip install -r figures/requirements.txt
+python figures/generate_figures.py
 ```
 
-## Repository contents
+Outputs are written to `figures/output/` in PNG and PDF formats.
 
-- `src/etg.py` — pure-Python implementation of the ETG object
-- `examples/` — worked examples (mathematical precedence letter, musical encoding, simple spacecraft telemetry)
-- `docs/` — formal definition and design notes
-- `LICENSE` — MIT
+## Build the manuscript
+
+From `paper/`:
+
+```bash
+pdflatex -interaction=nonstopmode main.tex
+biber main
+pdflatex -interaction=nonstopmode main.tex
+pdflatex -interaction=nonstopmode main.tex
+```
+
+The source uses BibLaTeX's APA style. Final submission should still be checked against the exact APA 7 and target-journal requirements.
+
+## Lean 4 formalization
+
+See [formalization/README.md](formalization/README.md). The initial formal layer addresses edge identity, endpoint well-formedness, edge-realized walks, non-negative path weights, and rational spectral bounds. Lean proves formal consequences of definitions and assumptions; it does not authenticate evidence or certify forensic conclusions.
+
+## Forensic-use boundary
+
+The forensic extension specifies evidence-record fields, custody-event continuity checks, temporal uncertainty intervals, and reproducibility manifests. These are proposed data and audit structures, not a validated forensic method. A casework deployment requires validation for its intended purpose, documented error behavior, competent review, and applicable legal and laboratory governance.
 
 ## Citation
 
-If you use the Epistolary Transfer Graph in academic or mission work, please cite:
-
-> Epistolary Transfer Graph (ETG), 22 November 2026.  
-> Novel directed multigraph with nasal-resonance spectral layer for formal letter transfer and spacecraft harmonic encoding.
-
-## Status
-
-Concept and reference implementation released 22 Nov 2026.  
-Formal Lean formalisation and hardware-in-the-loop nasal-aeronautic tests are open research directions.
+Seals, L. J., Jr. (2026). *The Epistolary Transfer Graph (ETG): A typed directed multigraph for heterogeneous provenance, attribution, and exploratory graph sonification* (Version 0.3.0) [Manuscript]. Lewis Seals Publishing L3C.
