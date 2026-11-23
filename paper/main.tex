@@ -9,7 +9,9 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
-\usepackage[round,authoryear]{natbib}
+\usepackage[style=apa,backend=biber]{biblatex}
+\DeclareLanguageMapping{english}{english-apa}
+\addbibresource{references.bib}
 \usepackage{caption}
 \title{The Epistolary Transfer Graph (ETG): A Typed Directed Multigraph for Heterogeneous Provenance, Attribution, and Exploratory Graph Sonification}
 \author{Lewis James Seals Jr.\\Independent Researcher\\Lewis Seals Publishing L3C\\\texttt{ljrseals@gmail.com}}
@@ -21,13 +23,13 @@ This paper specifies the Epistolary Transfer Graph (ETG), a typed, weighted, dir
 \end{abstract}
 \noindent\textbf{Keywords:} typed directed multigraph; provenance; attribution; graph traversal; sonification; auditory display; spectral mapping.
 \section{Introduction}
-Relational records often combine assertions that differ in meaning while sharing a common graph-shaped representation. A document may precede another document, influence a later claim, cite a source, embed a mathematical construction, or modulate a musical motif. Treating all such relations as undifferentiated links obscures their semantics. Provenance research addresses the origins and production histories of information objects; the W3C PROV family provides a standardized vocabulary for describing entities, activities, and agents and their relations (World Wide Web Consortium [W3C], 2013a, 2013b). ETG is proposed as a compact typed-multigraph representation for a selected set of cross-domain transfer assertions, not as a replacement for PROV.
-A second motivation is exploratory auditory access to graph structure. Sonification research studies systematic transformations from data relations to sound, but mapping design and evaluation remain central methodological issues (Dubus & Bresin, 2013). Recent work has emphasized common terminology and coordinated visual-auditory analysis (Enge et al., 2023, 2024). ETG therefore treats sound generation as a downstream, optional mapping rather than as an intrinsic property of the graph.
+Relational records often combine assertions that differ in meaning while sharing a common graph-shaped representation. A document may precede another document, influence a later claim, cite a source, embed a mathematical construction, or modulate a musical motif. Treating all such relations as undifferentiated links obscures their semantics. Provenance research addresses the origins and production histories of information objects; the W3C PROV family provides a standardized vocabulary for describing entities, activities, and agents and their relations \\parencite{w3c2013primer,w3c2013provo}. ETG is proposed as a compact typed-multigraph representation for a selected set of cross-domain transfer assertions, not as a replacement for PROV.
+A second motivation is exploratory auditory access to graph structure. Sonification research studies systematic transformations from data relations to sound, but mapping design and evaluation remain central methodological issues \\parencite{dubus2013mapping}. Recent work has emphasized common terminology and coordinated visual-auditory analysis \\parencite{enge2023terminology,enge2024open}. ETG therefore treats sound generation as a downstream, optional mapping rather than as an intrinsic property of the graph.
 \section{Related Work and Positioning}
 \subsection{Provenance models}
-The PROV model organizes provenance around entities, activities, and agents, with relations that describe derivation, attribution, association, and influence. PROV-O expresses these concepts as an ontology for interoperable provenance descriptions (W3C, 2013a, 2013b). ETG differs in purpose and scope: its five transfer labels are a domain-oriented edge vocabulary for heterogeneous graph exploration. A production implementation should define explicit crosswalks to PROV terms rather than imply semantic equivalence.
+The PROV model organizes provenance around entities, activities, and agents, with relations that describe derivation, attribution, association, and influence. PROV-O expresses these concepts as an ontology for interoperable provenance descriptions \\parencite{w3c2013provo,w3c2013primer}. ETG differs in purpose and scope: its five transfer labels are a domain-oriented edge vocabulary for heterogeneous graph exploration. A production implementation should define explicit crosswalks to PROV terms rather than imply semantic equivalence.
 \subsection{Sonification}
-Sonification is not merely the attachment of arbitrary sounds to values. Mapping choices determine which data features are represented and what tasks listeners may perform. A systematic review of physical-quantity sonification found that evaluation of mapping strategies was comparatively uncommon, motivating explicit validation rather than intuitive claims of effectiveness (Dubus & Bresin, 2013). Work integrating visualization and sonification likewise argues for coordinated design and evaluation across perceptual channels (Enge et al., 2024).
+Sonification is not merely the attachment of arbitrary sounds to values. Mapping choices determine which data features are represented and what tasks listeners may perform. A systematic review of physical-quantity sonification found that evaluation of mapping strategies was comparatively uncommon, motivating explicit validation rather than intuitive claims of effectiveness \\parencite{dubus2013mapping}. Work integrating visualization and sonification likewise argues for coordinated design and evaluation across perceptual channels \\parencite{enge2024open}.
 \section{Formal Model}
 Let an ETG be
 \[
@@ -67,6 +69,5 @@ A complete evaluation should separate software correctness, structural query uti
 ETG does not establish priority or authorship as a matter of law or scholarly policy. It records typed assertions whose evidential status must be assessed independently. Edge weights are not inherently probabilities, truth values, or measures of intellectual influence. The five-type vocabulary is not exhaustive. The spectral mapping compresses graph information and is not invertible. No claim is made that the mapping is perceptually optimal, robust under noise, suitable for telemetry, or useful for propulsion control.
 \section{Conclusion}
 ETG provides a typed directed multigraph vocabulary for selected heterogeneous transfer relations and an explicitly limited path-to-frequency mapping. Its contribution is the proposed combination and operational specification, not a claim to replace established provenance standards or to demonstrate validated auditory communication. The next steps are implementation verification, interoperability work, and controlled empirical evaluation.
-\bibliographystyle{apalike}
-\bibliography{references}
+\printbibliography
 \end{document}
