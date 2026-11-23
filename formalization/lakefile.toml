@@ -1,0 +1,7 @@
+name = "etg-formalization"
+version = "0.1.0"
+defaultTargets = ["ETG"]
+
+[[lean_lib]]
+name = "ETG"
+srcDir = "."
