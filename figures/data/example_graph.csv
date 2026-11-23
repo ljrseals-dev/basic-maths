@@ -1,0 +1,6 @@
+source,target,edge_type,weight
+Letter_A,Claim_1,precedence,0.9
+Letter_A,Claim_1,citation,0.4
+Claim_1,Claim_2,influence,0.7
+Claim_2,Motif_1,embedding,0.5
+Motif_1,Packet_1,modulation,0.8

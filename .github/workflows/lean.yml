@@ -1,0 +1,24 @@
+name: Check ETG Lean formalization
+
+on:
+  push:
+    paths:
+      - "formalization/**"
+      - ".github/workflows/lean.yml"
+  pull_request:
+    paths:
+      - "formalization/**"
+      - ".github/workflows/lean.yml"
+  workflow_dispatch:
+
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          use-mathlib-cache: true
+          lean4checker: false
+          working-directory: formalization
