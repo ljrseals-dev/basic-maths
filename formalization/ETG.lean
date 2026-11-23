@@ -182,8 +182,4 @@ theorem spectralMap_f3_bounds
     have h := sigma_lt_one (div_nonneg ht (by norm_num : (0:ℚ) < 5))
     nlinarith
 
-/-- Status labels classify assertions; no status constructor entails truth. -/
-theorem status_is_not_a_truth_proof (s : AssertionStatus) :
-    s = s := rfl
-
 end ETG
